@@ -13,7 +13,7 @@ load_dotenv()
 
 # Configuration
 TMDB_API_KEY = os.getenv("TMDB_API_KEY")
-TORRENT_FOLDER = os.getenv("TORRENT_FOLDER")
+TORRENT_FOLDER = os.getenv("TORRENT_FOLDER", "/path/to/your/torrents")
 TMDB_API_BASE = "https://api.themoviedb.org/3"
 TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w500"
 MAX_WORKERS = 10  # Number of concurrent threads
@@ -106,8 +106,8 @@ def process_single_torrent(torrent_file, folder):
         result['message'] = "Could not parse movie info"
         return result
     
-    # Check if poster already exists
-    poster_filename = torrent_file.stem + ".jpg"
+    # Create clean poster filename: "Title (Year).jpg"
+    poster_filename = f"{title} ({year}).jpg"
     poster_path = folder / poster_filename
     
     if poster_path.exists():
